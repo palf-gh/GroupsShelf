@@ -159,13 +159,13 @@
     // Create a menu item
     NSMenu *menu = [[NSMenu alloc] init];
     
-    NSMenuItem *addMissingCompositesItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Add missing composites", nil)
+    NSMenuItem *addMissingCompositesItem = [[NSMenuItem alloc] initWithTitle:Loc(@"Add missing composites")
                                                               action:@selector(addMissingComposites:)
                                                        keyEquivalent:@""];
     [addMissingCompositesItem setTarget:self];
     [menu addItem:addMissingCompositesItem];
     
-    NSMenuItem *removeGroupItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Remove group", nil)
+    NSMenuItem *removeGroupItem = [[NSMenuItem alloc] initWithTitle:Loc(@"Remove group")
                                                               action:@selector(removeSelectedGroup:)
                                                        keyEquivalent:@""];
     
