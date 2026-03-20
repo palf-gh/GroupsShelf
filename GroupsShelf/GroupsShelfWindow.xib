@@ -8,7 +8,8 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="GroupsShelf">
             <connections>
-                <outlet property="fixGroupsHeightConstraint" destination="laK-J7-Sjd" id="5TH-wN-STO"/>
+                <outlet property="directionSegmented" destination="dir-seg-ctrl" id="dir-seg-out"/>
+                <outlet property="fixGroupsHeightConstraint" destination="laK-J7-Sjd" id="P2t-x8-fUn"/>
                 <outlet property="fixGroupsView" destination="jud-Hf-eRe" id="5uS-3k-0F4"/>
                 <outlet property="glyphCollectionView" destination="Ziz-Gy-C3Q" id="yUo-Cc-0zn"/>
                 <outlet property="glyphsArrayController" destination="z6o-Dc-Sol" id="xR2-H2-eq4"/>
@@ -144,7 +145,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="423" height="27"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <button toolTip="Add glyphs to the group" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="d4e-uN-DSQ">
+                                <button toolTip="Add glyphs to the group" tag="103" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="d4e-uN-DSQ">
                                     <rect key="frame" x="390" y="2" width="25" height="23"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                     <buttonCell key="cell" type="roundTextured" title="+" bezelStyle="texturedRounded" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="6hX-pe-oTi">
@@ -155,7 +156,7 @@
                                         <action selector="addGlyphsToGroup:" target="-2" id="BTq-Sn-euW"/>
                                     </connections>
                                 </button>
-                                <button toolTip="Remove glyphs from the group" allowsExpansionToolTips="YES" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fWP-Zk-A42">
+                                <button toolTip="Remove glyphs from the group" tag="104" allowsExpansionToolTips="YES" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fWP-Zk-A42">
                                     <rect key="frame" x="363" y="2" width="25" height="23"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                     <buttonCell key="cell" type="roundTextured" title="−" bezelStyle="texturedRounded" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="FYs-Af-q22">
@@ -182,8 +183,22 @@
                             <action selector="closeWindowAction:" target="-2" id="Hpn-SC-eD5"/>
                         </connections>
                     </button>
+                    <segmentedControl verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dir-seg-ctrl">
+                        <rect key="frame" x="38" y="476" width="115" height="24"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="dir-seg-cell">
+                            <font key="font" metaFont="system" size="10"/>
+                            <segments>
+                                <segment title="Horiz." selected="YES"/>
+                                <segment title="Vert." tag="1"/>
+                            </segments>
+                        </segmentedCell>
+                        <connections>
+                            <action selector="selectDirection:" target="-2" id="dir-seg-act"/>
+                        </connections>
+                    </segmentedControl>
                     <searchField wantsLayer="YES" focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q4M-m7-5EM">
-                        <rect key="frame" x="38" y="479" width="606" height="19"/>
+                        <rect key="frame" x="160" y="479" width="484" height="19"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" placeholderString="Search Groups" usesSingleLineMode="YES" id="XJ2-xH-4JF" customClass="GroupsSerachFieldCell">
                             <font key="font" metaFont="system" size="16"/>
@@ -271,7 +286,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="230" height="26"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cet-Kk-EJM">
+                     <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" tag="101" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cet-Kk-EJM">
                                     <rect key="frame" x="19" y="3" width="101" height="17"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" lineBreakMode="clipping" title="Rename Groups" id="4Fh-RZ-9d8">
@@ -304,7 +319,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="230" height="26"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1AV-CM-PGc">
+                                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" tag="102" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1AV-CM-PGc">
                                     <rect key="frame" x="19" y="3" width="101" height="17"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" lineBreakMode="clipping" title="Fix Groups" id="CyG-iH-Lmm">

@@ -10,6 +10,8 @@
 #import "RenameGroupsViewController.h"
 #import "FixGroupsViewController.h"
 
+#define Loc(key) [[NSBundle bundleForClass:[self class]] localizedStringForKey:(key) value:@"" table:nil]
+
 @implementation GroupsShelf {
     BOOL _hasRegisteredObservers;
 }
@@ -34,7 +36,7 @@
 }
 
 - (NSString *)title {
-    return @"Groups Shelf";
+    return Loc(@"Groups Shelf");
 }
 
 - (NSString *)keyEquivalent {
@@ -78,6 +80,21 @@
     [[self glyphCollectionView] registerClass:[GroupsShelfItem class]
                         forItemWithIdentifier:@"GroupsShelfItem"];
     [[self groupsArrayController] addObserver:self forKeyPath:@"selectedObjects" options:1 context:nil];
+    
+    // Localization
+    [[self window] setTitle:Loc(@"Groups Shelf")];
+    [[self searchField] setPlaceholderString:Loc(@"Search Groups")];
+    [[self directionSegmented] setLabel:Loc(@"Horizontal") forSegment:0];
+    [[self directionSegmented] setLabel:Loc(@"Vertical") forSegment:1];
+    [self updateGroupPositionLabels];
+    
+    // Set labels using tags
+    [(NSTextField *)[[self window].contentView viewWithTag:101] setStringValue:Loc(@"Rename Groups")];
+    [(NSTextField *)[[self window].contentView viewWithTag:102] setStringValue:Loc(@"Fix Groups")];
+    
+    // Tooltips (I'll add tags 103 and 104 to buttons in XIB)
+    [(NSButton *)[[self window].contentView viewWithTag:103] setToolTip:Loc(@"Add glyphs to the group")];
+    [(NSButton *)[[self window].contentView viewWithTag:104] setToolTip:Loc(@"Remove glyphs from the group")];
 }
 
 
@@ -121,19 +138,36 @@
     [self renameSelectedGroup:[[self selectedGroupTextField] stringValue]];
 }
 
+- (IBAction)selectDirection:(id)sender {
+    [self updateGroupPositionLabels];
+    [self selectGroupTab:nil];
+}
+
+- (void)updateGroupPositionLabels {
+    BOOL isVertical = [[self directionSegmented] selectedSegment] == 1;
+    if (!isVertical) { // Horizontal
+        [[self groupPositoinSegmented] setLabel:Loc(@"Left") forSegment:0];
+        [[self groupPositoinSegmented] setLabel:Loc(@"Right") forSegment:1];
+    } else { // Vertical
+        [[self groupPositoinSegmented] setLabel:Loc(@"Top") forSegment:0];
+        [[self groupPositoinSegmented] setLabel:Loc(@"Bottom") forSegment:1];
+    }
+    [[self renameGroupsViewController] updateLabelsForVertical:isVertical];
+}
+
 - (IBAction)showOptionsMenu:(id)sender {
     // Create a menu item
     NSMenu *menu = [[NSMenu alloc] init];
     
-    NSMenuItem *addMissingCompositesItem = [[NSMenuItem alloc] initWithTitle:@"Add missing composites"
-                                                             action:@selector(addMissingComposites:)
-                                                      keyEquivalent:@""];
+    NSMenuItem *addMissingCompositesItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Add missing composites", nil)
+                                                              action:@selector(addMissingComposites:)
+                                                       keyEquivalent:@""];
     [addMissingCompositesItem setTarget:self];
     [menu addItem:addMissingCompositesItem];
     
-    NSMenuItem *removeGroupItem = [[NSMenuItem alloc] initWithTitle:@"Remove group"
-                                                             action:@selector(removeSelectedGroup:)
-                                                      keyEquivalent:@""];
+    NSMenuItem *removeGroupItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Remove group", nil)
+                                                              action:@selector(removeSelectedGroup:)
+                                                       keyEquivalent:@""];
     
     [removeGroupItem setTarget:self];
     [menu addItem:removeGroupItem];
@@ -174,14 +208,22 @@
 }
 
 -(GroupPosition)selectedGroupPosition{
-    return  [[self groupPositoinSegmented] selectedTag] == 0 ? positionLeft : positionRight;
+    BOOL isVertical = [[self directionSegmented] selectedSegment] == 1;
+    if (isVertical) {
+        return [[self groupPositoinSegmented] selectedSegment] == 0 ? positionTop : positionBottom;
+    } else {
+        return [[self groupPositoinSegmented] selectedSegment] == 0 ? positionLeft : positionRight;
+    }
 }
 
 
 // MARK: -Interface Updates
 
 -(void)updateKerningData{
-    [[self groupsArrayController] setContent:[self currentFontGroups]];
+    GroupPosition position = [self selectedGroupPosition];
+    
+    NSArray *groups = [KerningService currentFontGroupsForPosition:position];
+    [[self groupsArrayController] setContent:groups];
 }
 
 -(void)updateGlyphData{

@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak) IBOutlet NSButton *includeRightGroupCheckbox;
 @property (weak) IBOutlet NSButton *useRegexCheckbox;
 - (IBAction)renameGroupsActtion:(id)sender;
+- (void)updateLabelsForVertical:(BOOL)isVertical;
 
 @property (weak)GroupsShelf *parent;
 @end
